@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Quilling template</title>
+	<title>Quilling template</title>
 </head>
 <body>
 <div id="view" <div>
@@ -11,10 +11,30 @@
 var size = Math.min(screen.availHeight,screen.availWidth);
 var cent = size/2;
 
-var sText = '<svg width="'+size+'" height="'+size+'">';
-	sText += '<rect  width="'+size+'" height="'+size+'" style="fill:none;stroke-width:1;stroke:grey" />\n';
+var sText = '<svg width="'+size+'" height="'+size+'">';  // set up square SVG 
+// and bounding box
+sText += '<rect  width="'+size+'" height="'+size+'" style="fill:none;stroke-width:1;stroke:grey" />\n';
+// set up radials
+sText += radial(10, "gray", "2,2", 1 );
+sText += radial(5, "black", "0", 2 );
+sText += '</svg>';
+view.innerHTML = sText;
 
-view.innerHTML = sText +'</svg>';
+function radial(numRad, col, pat, wid){
+	var dAng, ang, x, y, i;	
+	var tex = "";
+	
+	dAng = 2 * Math.PI / numRad;
+	len = size; // this will exceed the bounding box ok for Chrome of FireFox
+	for ( i=0; i < numRad; i++){
+		ang = Math.PI/2 - i * dAng; // bearing
+		x = cent + len * Math.cos(ang);
+		y = cent - len * Math.sin(ang);
+		tex += '<line x1="'+cent+'" y1="'+cent+'" x2="'+x+'" y2="'+y+'" style="stroke:'+col+';stroke-width:'+wid+';stroke-dasharray:'+pat+'" />\n';
+		
+	}
+	return tex;
+}
 </script>
 </body>
 </html>
