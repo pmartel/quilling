@@ -7,7 +7,14 @@
 <div id="view" <div>
 
 <script>
-view.innerHTML = "this is a test"
+// we want a square geometry
+var size = Math.min(screen.availHeight,screen.availWidth);
+var cent = size/2;
+
+var sText = '<svg width="'+size+'" height="'+size+'">';
+	sText += '<rect  width="'+size+'" height="'+size+'" style="fill:none;stroke-width:1;stroke:grey" />\n';
+
+view.innerHTML = sText +'</svg>';
 </script>
 </body>
 </html>
