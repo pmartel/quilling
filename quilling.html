@@ -2,25 +2,40 @@
 <html>
 <head>
 	<title>Quilling template</title>
+<!-- 
+Copyright (c) 2017 Philip Martel
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR 
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.
+-->
 </head>
 <body>
-<div id="view" <div>
-
 <script>
 // we want a square geometry
-var size = Math.min(screen.availHeight,screen.availWidth);
+//var size = Math.min(screen.availHeight,screen.availWidth);
+//var cent = size/2;
+var size = Math.min(window.innerHeight,window.innerWidth);
 var cent = size/2;
 
-var sText = '<svg width="'+size+'" height="'+size+'">';  // set up square SVG 
-// and bounding box
-sText += '<rect  width="'+size+'" height="'+size+'" style="fill:none;stroke-width:1;stroke:grey" />\n';
-// set up radials
-sText += radial( 10, "grey", "2,2", 1 );
-sText += radial( 5, "black", "0", 2 );
-sText += circ( .25, "grey",  "2,2", 1 );
-sText += circ( 1, "black",  "0", 1 );
-sText += '</svg>';
-view.innerHTML = sText;
+drawFig();
+
+function drawFig(){
+	var sText = '<svg width="'+size+'" height="'+size+'">';  // set up square SVG 
+	// and bounding box
+	sText += '<rect  width="'+size+'" height="'+size+'" style="fill:none;stroke-width:1;stroke:grey" />\n';
+	// set up radials
+	sText += radial( 10, "grey", "2,2", 1 );
+	sText += radial( 5, "black", "0", 2 );
+	sText += circ( .25, "grey",  "2,2", 1 );
+	sText += circ( 1, "black",  "0", 1 );
+	sText += '</svg>';
+	view.innerHTML = sText;
+}
 
 // step will be in inches on the printed page
 function circ(step,  col, pat, wid){
