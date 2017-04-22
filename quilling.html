@@ -15,27 +15,58 @@ DEALINGS IN THE SOFTWARE.
 -->
 </head>
 <body>
-<div id="view" />
+<div id="view">&nbsp;</div> <br /> <br />
+<div>
+<table>
+	<tr>
+		<th>Number of major spokes</th>
+		<th><input type="number" id="majSpokes" value="5" /></th>
+	</tr>
+	<tr>
+		<th>Minor spokes between</th>
+		<th><input type="number" id="minSpokes"  value="1" /></th>
+	</tr>
+	<tr>
+		<th>Major circle radius</th>
+		<th><input type="number" id="majRad"  value="1" /></th>
+	</tr>
+	<tr>
+		<th>Minor circle radius</th>
+		<th><input type="number" id="minRad"  value=".25" /></th>
+	</tr>
+</table>
+<br />
+<button name="drawIt" onclick="drawTemplate()">Draw Template</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button name="printIt" onclick="window.print()">Print</button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<button name="aboutIt" onclick="showAbout()">About</button><br />
+</div>
 <script>
 // we want a square geometry
 //var size = Math.min(screen.availHeight,screen.availWidth);
 //var cent = size/2;
 var size = Math.min(window.innerHeight,window.innerWidth);
 var cent = size/2;
+var printScale = 113.4; //emperical to get the right size
 
-drawFig();
-
-function drawFig(){
+function drawTemplate(){
+	var majSpokes = Number(document.getElementById("majSpokes").value);
+	var minSpokes =  Number(document.getElementById("minSpokes").value); 
+	minSpokes = majSpokes * (minSpokes+1); // fix minor spoke count
+	
+	var majRadius = Number(document.getElementById("majRad").value);
+	var minRadius = Number(document.getElementById("minRad").value);
+	
 	var sText = '<svg width="'+size+'" height="'+size+'">';  // set up square SVG 
 	// and bounding box
 	sText += '<rect  width="'+size+'" height="'+size+'" style="fill:none;stroke-width:1;stroke:grey" />\n';
 	// set up radials
-	sText += radial( 10, "grey", "2,2", 1 );
-	sText += radial( 5, "black", "0", 2 );
-	sText += circ( .25, "grey",  "2,2", 1 );
-	sText += circ( 1, "black",  "0", 1 );
+	sText += radial( minSpokes, "grey", "2,2", 1 );
+	sText += radial( majSpokes, "black", "0", 2 );
+	// set up circles
+	sText += circ( minRadius, "grey",  "2,2", 1 );
+	sText += circ( majRadius, "black",  "0", 1 );
 	sText += '</svg>';
-	view.innerHTML = sText;
+	document.getElementById("view").innerHTML = sText;
 }
 
 // step will be in inches on the printed page
@@ -43,13 +74,12 @@ function circ(step,  col, pat, wid){
 	var r;
 	var tex = "";
 	
-	step = step * 113.4; //emperical to get the right size
+	step = step * printScale;
 	for(r=step; r < size*Math.sqrt(2);r+=step){
 		tex += '<circle cx="'+cent+'" cy="'+cent+'" r="'+r+'" stroke="'+col+'" stroke-width="'+wid+'" fill="none" stroke-dasharray="'+pat+'"/>\n';
 	}
 	return tex;
 }
-
 
 function radial(numRad, col, pat, wid){
 	var dAng, ang, x, y, i;	
@@ -62,10 +92,19 @@ function radial(numRad, col, pat, wid){
 		x = cent + len * Math.cos(ang);
 		y = cent - len * Math.sin(ang);
 		tex += '<line x1="'+cent+'" y1="'+cent+'" x2="'+x+'" y2="'+y+'" style="stroke:'+col+';stroke-width:'+wid+';stroke-dasharray:'+pat+'" />\n';
-		
 	}
 	return tex;
 }
+
+function showAbout(){
+	var txt = "Copyright 2017 by Philip Martel\n";
+	txt += "Released under the MIT License https://en.wikipedia.org/wiki/MIT_License \n\n";
+	txt += "Generates a spider-web type pattern with the specified number of major spokes\n";
+	txt += "with the specified number of minor spokes between them\n";
+	txt += "Currently the major and minor circle radii are in inches.\n";
+	alert(txt);
+}
+
 </script>
 </body>
 </html>
